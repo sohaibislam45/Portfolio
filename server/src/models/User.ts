@@ -1,19 +1,19 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
-export interface IMessage extends Document {
-  name: string;
+export interface IUser extends Document {
+  uid: string; // Firebase UID
   email: string;
-  message: string;
-  read: boolean;
+  role: 'admin' | 'user';
   createdAt: Date;
   updatedAt: Date;
 }
 
-const MessageSchema = new Schema<IMessage>(
+const UserSchema = new Schema<IUser>(
   {
-    name: {
+    uid: {
       type: String,
       required: true,
+      unique: true,
       trim: true,
     },
     email: {
@@ -22,13 +22,10 @@ const MessageSchema = new Schema<IMessage>(
       trim: true,
       lowercase: true,
     },
-    message: {
+    role: {
       type: String,
-      required: true,
-    },
-    read: {
-      type: Boolean,
-      default: false,
+      enum: ['admin', 'user'],
+      default: 'user',
     },
   },
   {
@@ -36,5 +33,5 @@ const MessageSchema = new Schema<IMessage>(
   }
 );
 
-export default mongoose.model<IMessage>('Message', MessageSchema);
+export default mongoose.model<IUser>('User', UserSchema);
 

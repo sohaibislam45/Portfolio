@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import { revealStaggerChildren } from '../animations/sectionReveal';
 import Section from '../components/Section';
 import SectionTitle from '../components/SectionTitle';
+import myPhoto2 from '../assets/myPhoto2.jpg';
 
 const About = () => {
   const skillsRef = useRef<HTMLDivElement>(null);
@@ -29,9 +30,11 @@ const About = () => {
         <SectionTitle label="About" title="Who I Am" />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <div>
-            <div className="w-full h-96 bg-gradient-to-br from-primary-400 to-primary-600 rounded-lg flex items-center justify-center text-white text-4xl font-bold">
-              Your Photo
-            </div>
+            <img
+              src={myPhoto2}
+              alt="Profile"
+              className="w-full h-96 object-cover rounded-lg"
+            />
           </div>
           <div>
             <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">

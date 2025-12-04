@@ -1,10 +1,12 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import { ThemeProvider } from './context/ThemeContext';
+import { AuthProvider } from './context/AuthContext';
 import { useSmoothScroll } from './hooks/useSmoothScroll';
 import CustomCursor from './components/CustomCursor';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import ProtectedRoute from './components/ProtectedRoute';
 import Hero from './sections/Hero';
 import About from './sections/About';
 import Services from './sections/Services';
@@ -16,6 +18,14 @@ import Contact from './sections/Contact';
 import Blog from './routes/Blog';
 import BlogPost from './routes/BlogPost';
 import { AnimationDemo } from './routes/AnimationDemo';
+import AdminLogin from './routes/AdminLogin';
+import AdminLayout from './routes/admin/AdminLayout';
+import Dashboard from './routes/admin/Dashboard';
+import AdminProjects from './routes/admin/Projects';
+import AdminBlog from './routes/admin/Blog';
+import Messages from './routes/admin/Messages';
+import AdminTestimonials from './routes/admin/Testimonials';
+import Users from './routes/admin/Users';
 
 function Home() {
   useSmoothScroll();
@@ -44,6 +54,24 @@ function AppRoutes() {
         <Route path="/blog" element={<Blog />} />
         <Route path="/blog/:slug" element={<BlogPost />} />
         <Route path="/animation-demo" element={<AnimationDemo />} />
+        
+        {/* Admin Routes */}
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute>
+              <AdminLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="projects" element={<AdminProjects />} />
+          <Route path="blog" element={<AdminBlog />} />
+          <Route path="messages" element={<Messages />} />
+          <Route path="testimonials" element={<AdminTestimonials />} />
+          <Route path="users" element={<Users />} />
+        </Route>
       </Routes>
     </AnimatePresence>
   );
@@ -52,12 +80,14 @@ function AppRoutes() {
 function App() {
   return (
     <ThemeProvider>
-      <Router>
-        <CustomCursor />
-        <Header />
-        <AppRoutes />
-        <Footer />
-      </Router>
+      <AuthProvider>
+        <Router>
+          <CustomCursor />
+          <Header />
+          <AppRoutes />
+          <Footer />
+        </Router>
+      </AuthProvider>
     </ThemeProvider>
   );
 }

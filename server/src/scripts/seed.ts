@@ -3,6 +3,8 @@ import dotenv from 'dotenv';
 import { connectDB } from '../config/database.js';
 import Project from '../models/Project.js';
 import BlogPost from '../models/BlogPost.js';
+import Testimonial from '../models/Testimonial.js';
+import User from '../models/User.js';
 
 dotenv.config();
 
@@ -223,6 +225,36 @@ TypeScript enhances React development by providing type safety and better develo
   },
 ];
 
+const testimonials = [
+  {
+    name: 'John Doe',
+    role: 'CEO',
+    company: 'Tech Corp',
+    content: 'Excellent work! The project was delivered on time and exceeded our expectations.',
+    rating: 5,
+    featured: true,
+    order: 1,
+  },
+  {
+    name: 'Jane Smith',
+    role: 'Product Manager',
+    company: 'StartupXYZ',
+    content: 'Professional, reliable, and highly skilled. Would definitely work with again.',
+    rating: 5,
+    featured: true,
+    order: 2,
+  },
+  {
+    name: 'Mike Johnson',
+    role: 'CTO',
+    company: 'InnovateLabs',
+    content: 'Outstanding developer with great attention to detail and problem-solving skills.',
+    rating: 5,
+    featured: false,
+    order: 3,
+  },
+];
+
 async function seed() {
   try {
     await connectDB();
@@ -230,6 +262,7 @@ async function seed() {
     // Clear existing data
     await Project.deleteMany({});
     await BlogPost.deleteMany({});
+    await Testimonial.deleteMany({});
 
     // Insert projects
     const createdProjects = await Project.insertMany(projects);
@@ -238,6 +271,29 @@ async function seed() {
     // Insert blog posts
     const createdPosts = await BlogPost.insertMany(blogPosts);
     console.log(`Created ${createdPosts.length} blog posts`);
+
+    // Insert testimonials
+    const createdTestimonials = await Testimonial.insertMany(testimonials);
+    console.log(`Created ${createdTestimonials.length} testimonials`);
+
+    // Create demo admin user (replace with your Firebase UID)
+    const demoAdminUid = process.env.DEMO_ADMIN_UID || 'REPLACE_WITH_YOUR_FIREBASE_UID';
+    if (demoAdminUid !== 'REPLACE_WITH_YOUR_FIREBASE_UID') {
+      const existingUser = await User.findOne({ uid: demoAdminUid });
+      if (!existingUser) {
+        const adminUser = new User({
+          uid: demoAdminUid,
+          email: 'admin@example.com', // Replace with actual email
+          role: 'admin',
+        });
+        await adminUser.save();
+        console.log('Demo admin user created. Remember to run set-admin-claim script!');
+      } else {
+        console.log('Demo admin user already exists');
+      }
+    } else {
+      console.log('Skipping admin user creation. Set DEMO_ADMIN_UID in .env to create one.');
+    }
 
     console.log('Seed data created successfully!');
     process.exit(0);

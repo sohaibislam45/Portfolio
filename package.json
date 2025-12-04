@@ -12,6 +12,8 @@
     "concurrently": "^9.1.0"
   },
   "dependencies": {
-    "lottie-web": "^5.13.0"
+    "firebase": "^12.6.0",
+    "lottie-web": "^5.13.0",
+    "react-toastify": "^11.0.5"
   }
 }
