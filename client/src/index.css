@@ -40,6 +40,16 @@
   }
 }
 
+/* Typing cursor animation */
+@keyframes blink {
+  0%, 50% {
+    opacity: 1;
+  }
+  51%, 100% {
+    opacity: 0;
+  }
+}
+
 /* Hide default cursor for custom cursor */
 body.custom-cursor-active {
   cursor: none;

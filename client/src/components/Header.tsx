@@ -2,6 +2,50 @@ import { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { useTheme } from '../hooks/useTheme';
 
+interface NavButtonProps {
+  children: React.ReactNode;
+  onClick: () => void;
+}
+
+const NavButton = ({ children, onClick }: NavButtonProps) => {
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
+  const handleMouseEnter = () => {
+    if (buttonRef.current) {
+      gsap.to(buttonRef.current, {
+        y: -2,
+        scale: 1.05,
+        duration: 0.3,
+        ease: 'power2.out',
+      });
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (buttonRef.current) {
+      gsap.to(buttonRef.current, {
+        y: 0,
+        scale: 1,
+        duration: 0.3,
+        ease: 'power2.out',
+      });
+    }
+  };
+
+  return (
+    <button
+      ref={buttonRef}
+      onClick={onClick}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      className="relative px-4 py-2 text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-300 font-medium group"
+    >
+      <span className="relative z-10">{children}</span>
+      <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary-600 dark:bg-primary-400 group-hover:w-full transition-all duration-300 ease-out" />
+    </button>
+  );
+};
+
 const Header = () => {
   const { theme, toggleTheme } = useTheme();
   const headerRef = useRef<HTMLElement>(null);
@@ -19,10 +63,11 @@ const Header = () => {
   useEffect(() => {
     if (headerRef.current) {
       const bgColor = theme === 'dark'
-        ? (isScrolled ? 'rgba(17, 24, 39, 0.95)' : 'rgba(17, 24, 39, 0)')
-        : (isScrolled ? 'rgba(255, 255, 255, 0.95)' : 'rgba(255, 255, 255, 0)');
+        ? (isScrolled ? 'rgba(17, 24, 39, 0.98)' : 'rgba(17, 24, 39, 0.95)')
+        : (isScrolled ? 'rgba(255, 255, 255, 0.98)' : 'rgba(255, 255, 255, 0.95)');
       gsap.to(headerRef.current, {
         backgroundColor: bgColor,
+        boxShadow: isScrolled ? '0 4px 6px -1px rgba(0, 0, 0, 0.1)' : '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
         duration: 0.3,
       });
     }
@@ -38,42 +83,22 @@ const Header = () => {
   return (
     <header
       ref={headerRef}
-      className="fixed top-0 left-0 right-0 z-50 transition-all duration-300 dark:bg-gray-900/95 backdrop-blur-sm"
+      className="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md shadow-sm"
     >
       <nav className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           <button
             onClick={() => scrollToSection('hero')}
-            className="text-2xl font-bold text-gray-900 dark:text-white hover:opacity-80 transition-opacity"
+            className="text-2xl font-bold text-gray-900 dark:text-white hover:opacity-80 transition-all duration-300 hover:scale-105"
           >
             Portfolio
           </button>
 
-          <div className="hidden md:flex items-center space-x-8">
-            <button
-              onClick={() => scrollToSection('about')}
-              className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
-            >
-              About
-            </button>
-            <button
-              onClick={() => scrollToSection('services')}
-              className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
-            >
-              Services
-            </button>
-            <button
-              onClick={() => scrollToSection('projects')}
-              className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
-            >
-              Projects
-            </button>
-            <button
-              onClick={() => scrollToSection('contact')}
-              className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
-            >
-              Contact
-            </button>
+          <div className="hidden md:flex items-center space-x-2">
+            <NavButton onClick={() => scrollToSection('about')}>About</NavButton>
+            <NavButton onClick={() => scrollToSection('services')}>Services</NavButton>
+            <NavButton onClick={() => scrollToSection('projects')}>Projects</NavButton>
+            <NavButton onClick={() => scrollToSection('contact')}>Contact</NavButton>
           </div>
 
           <button
