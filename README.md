@@ -37,8 +37,13 @@ npm run install:all
 ```
 
 3. Set up environment variables:
-   - Copy `server/.env.example` to `server/.env`
-   - Add your MongoDB connection string:
+   - The `.env` file has been created with MongoDB Atlas connection
+   - MongoDB Atlas connection string is configured:
+     ```
+     MONGODB_URI=mongodb+srv://sohaibislam45_db_user:RDotRMYtek6V03Tp@cluster0.qhmatus.mongodb.net/portfolio?appName=Cluster0
+     PORT=5000
+     ```
+   - For local MongoDB, update `server/.env` with:
      ```
      MONGODB_URI=mongodb://localhost:27017/portfolio
      PORT=5000
@@ -121,7 +126,6 @@ npm run dev:server
 - 🎪 Optional Three.js animated background
 - 📱 Fully responsive design
 
-## License
-
-MIT
+## To run this project:
+npm run install:all
 
