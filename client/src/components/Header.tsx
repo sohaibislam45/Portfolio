@@ -18,10 +18,11 @@ const Header = () => {
 
   useEffect(() => {
     if (headerRef.current) {
+      const bgColor = theme === 'dark'
+        ? (isScrolled ? 'rgba(17, 24, 39, 0.95)' : 'rgba(17, 24, 39, 0)')
+        : (isScrolled ? 'rgba(255, 255, 255, 0.95)' : 'rgba(255, 255, 255, 0)');
       gsap.to(headerRef.current, {
-        backgroundColor: isScrolled
-          ? 'rgba(255, 255, 255, 0.95)'
-          : 'rgba(255, 255, 255, 0)',
+        backgroundColor: bgColor,
         duration: 0.3,
       });
     }
