@@ -15,6 +15,7 @@ import BlogPreview from './sections/BlogPreview';
 import Contact from './sections/Contact';
 import Blog from './routes/Blog';
 import BlogPost from './routes/BlogPost';
+import { AnimationDemo } from './routes/AnimationDemo';
 
 function Home() {
   useSmoothScroll();
@@ -42,6 +43,7 @@ function AppRoutes() {
         <Route path="/" element={<Home />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="/blog/:slug" element={<BlogPost />} />
+        <Route path="/animation-demo" element={<AnimationDemo />} />
       </Routes>
     </AnimatePresence>
   );

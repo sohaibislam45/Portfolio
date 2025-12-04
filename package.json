@@ -10,6 +10,8 @@
   },
   "devDependencies": {
     "concurrently": "^9.1.0"
+  },
+  "dependencies": {
+    "lottie-web": "^5.13.0"
   }
 }
-

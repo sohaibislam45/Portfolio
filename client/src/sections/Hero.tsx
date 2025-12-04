@@ -4,6 +4,7 @@ import { Canvas } from '@react-three/fiber';
 import { splitTextIntoWords, animateTextReveal } from '../animations/textSplit';
 import Button from '../components/Button';
 import HeroBackground from '../components/HeroBackground';
+import myPhoto from '../assets/myPhoto.png';
 
 interface HeroProps {
   enableThreeJS?: boolean;
@@ -13,13 +14,25 @@ const Hero = ({ enableThreeJS = false }: HeroProps) => {
   const headingRef = useRef<HTMLHeadingElement>(null);
   const subheadingRef = useRef<HTMLParagraphElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
+  const photoRef = useRef<HTMLImageElement>(null);
 
   useEffect(() => {
+    // Photo animation - starts immediately
+    if (photoRef.current) {
+      gsap.fromTo(
+        photoRef.current,
+        { opacity: 0, scale: 0.95 },
+        { opacity: 0.15, scale: 1, duration: 0.8, ease: 'power2.out' }
+      );
+    }
+
+    // Heading animation - starts at 0.2s
     if (headingRef.current) {
       const words = splitTextIntoWords(headingRef.current);
       animateTextReveal(words, { delay: 0.2, stagger: 0.1, from: 'bottom' });
     }
 
+    // Subheading animation - starts at 0.8s
     if (subheadingRef.current) {
       gsap.fromTo(
         subheadingRef.current,
@@ -28,6 +41,7 @@ const Hero = ({ enableThreeJS = false }: HeroProps) => {
       );
     }
 
+    // CTA animation - starts at 1.2s
     if (ctaRef.current) {
       gsap.fromTo(
         ctaRef.current,
@@ -49,6 +63,19 @@ const Hero = ({ enableThreeJS = false }: HeroProps) => {
       id="hero"
       className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-primary-50 to-primary-100 dark:from-gray-900 dark:to-gray-800"
     >
+      {/* Background Photo */}
+      <img
+        ref={photoRef}
+        src={myPhoto}
+        alt="Profile"
+        className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none"
+        style={{ 
+          opacity: 0,
+          zIndex: 1,
+          transform: 'scale(0.95)',
+        }}
+      />
+
       {enableThreeJS && (
         <div className="absolute inset-0 z-0">
           <Canvas camera={{ position: [0, 0, 5] }}>
